@@ -1,0 +1,17 @@
+{
+  "name": "dev-blog-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/k1my3ch4n/dev-blog-server.git",
+  "author": "Kim <kevin2695@naver.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "apollo-server": "^3.13.0",
+    "graphql": "^16.10.0",
+    "sqlite3": "^5.1.7"
+  }
+}
