@@ -1,0 +1,26 @@
+{
+  "name": "dev-blog-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/k1my3ch4n/dev-blog-server.git",
+  "author": "Kim <kevin2695@naver.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node src/server.ts"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "dotenv": "^16.4.7",
+    "graphql": "^16.10.0",
+    "graphql-scalars": "^1.24.0",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "type-graphql": "^2.0.0-rc.2",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
