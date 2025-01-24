@@ -1,4 +1,4 @@
-FROM node:20 AS build
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ COPY ./yarn.lock ./yarn.lock
 
 COPY . .
 
-RUN yarn install
+RUN yarn install --production
 RUN yarn build
 
 CMD ["node", "dist/server.js"]
