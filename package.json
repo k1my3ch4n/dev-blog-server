@@ -6,7 +6,8 @@
   "author": "Kim <kevin2695@naver.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node src/server.ts"
+    "dev": "ts-node src/server.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",
