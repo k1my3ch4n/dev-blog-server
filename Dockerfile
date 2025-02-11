@@ -12,7 +12,7 @@ RUN yarn install
 COPY . .
 
 # 포트 노출
-EXPOSE 8080
+EXPOSE 4000
 
 # 서버 실행 (index.mjs)
 CMD ["node", "index.mjs"]
