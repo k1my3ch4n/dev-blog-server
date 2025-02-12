@@ -1,5 +1,5 @@
-import pg from 'pg';
-import dotenv from 'dotenv';
+import pg from "pg";
+import dotenv from "dotenv";
 
 dotenv.config();
 const { Pool } = pg;
@@ -15,11 +15,6 @@ const pool = new Pool({
 export async function initDB() {
   const client = await pool.connect();
   try {
-    // 실행 시 테이블 삭제
-    await client.query(`
-      DROP TABLE IF EXISTS posts;
-    `);
-
     await client.query(`
       CREATE TABLE IF NOT EXISTS posts (
         id SERIAL PRIMARY KEY,
@@ -28,7 +23,7 @@ export async function initDB() {
         tags TEXT[] DEFAULT '{}'
       )
     `);
-    console.log('Database initialized');
+    console.log("Database initialized");
   } finally {
     client.release();
   }
