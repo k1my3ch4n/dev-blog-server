@@ -1,0 +1,31 @@
+name: deploy
+
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: git_checkout
+        uses: actions/checkout@v4
+
+      - name: Auto Deploy
+        id: auto_deploy
+        uses: ./.github/actions/auto_deploy
+        with:
+          gcp_region: ${{ secrets.GCP_REGION }}
+          gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
+          gcp_service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Upload Log File
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow_logs
+          path: log_${{ github.run_id }}.txt
+          if-no-files-found: error
+          retention-days: 1
