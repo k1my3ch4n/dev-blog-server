@@ -10,8 +10,8 @@ export const typeDefs = gql`
   }
 
   type Query {
-    getPosts: [Post!]!
-    getPost(id: String!): Post
+    posts: [Post!]!
+    post(id: String!): Post!
   }
 
   type Mutation {
@@ -22,11 +22,11 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    getPosts: async () => {
+    posts: async () => {
       const { rows } = await pool.query("SELECT * FROM posts");
       return rows;
     },
-    getPost: async (_, { id }) => {
+    post: async (_, { id }) => {
       const { rows } = await pool.query("SELECT * FROM posts WHERE id = $1", [
         id,
       ]);
