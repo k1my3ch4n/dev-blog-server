@@ -32,7 +32,7 @@ runs:
       run: |
         IMAGE_NAME="${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/server/deploy"
 
-        docker build -t $IMAGE_NAME:latest
+        docker build -t $IMAGE_NAME:latest .
         docker push $IMAGE_NAME:latest
       shell: bash
 
