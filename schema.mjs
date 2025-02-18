@@ -22,7 +22,7 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    posts: async (_, { orderBy = "ASC" }) => {
+    posts: async (_, { orderBy = "DESC" }) => {
       const order = orderBy.toUpperCase() === "DESC" ? "DESC" : "ASC";
 
       const { rows } = await pool.query(
