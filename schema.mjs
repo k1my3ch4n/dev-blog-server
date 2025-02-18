@@ -10,26 +10,33 @@ export const typeDefs = gql`
   }
 
   type Query {
-    posts: [Post!]!
-    post(id: String!): Post!
+    posts(orderBy: String): [Post!]!
+    post(postKey: String!): Post!
   }
 
   type Mutation {
     addPost(title: String!, postKey: String!, tags: [String]!): Post!
-    deletePost(id: String!): Boolean
+    deletePost(postKey: String!): Boolean
   }
 `;
 
 export const resolvers = {
   Query: {
-    posts: async () => {
-      const { rows } = await pool.query("SELECT * FROM posts");
+    posts: async (_, { orderBy = "ASC" }) => {
+      const order = orderBy.toUpperCase() === "DESC" ? "DESC" : "ASC";
+
+      const { rows } = await pool.query(
+        `SELECT * FROM posts ORDER BY id ${order}`
+      );
+
       return rows;
     },
-    post: async (_, { id }) => {
-      const { rows } = await pool.query("SELECT * FROM posts WHERE id = $1", [
-        id,
-      ]);
+    post: async (_, { postKey }) => {
+      const { rows } = await pool.query(
+        "SELECT * FROM posts WHERE postKey = $1",
+        [postKey]
+      );
+
       return rows[0];
     },
   },
@@ -44,8 +51,11 @@ export const resolvers = {
 
       return newPost;
     },
-    deletePost: async (_, { id }) => {
-      const result = await pool.query("DELETE FROM posts WHERE id = $1", [id]);
+    deletePost: async (_, { postKey }) => {
+      const result = await pool.query("DELETE FROM posts WHERE postKey = $1", [
+        postKey,
+      ]);
+
       return result.rowCount > 0;
     },
   },
