@@ -33,7 +33,7 @@ export const resolvers = {
     },
     post: async (_, { postKey }) => {
       const { rows } = await pool.query(
-        "SELECT * FROM posts WHERE postKey = $1",
+        'SELECT * FROM posts WHERE "postKey" = $1',
         [postKey]
       );
 
