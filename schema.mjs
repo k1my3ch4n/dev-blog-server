@@ -52,9 +52,10 @@ export const resolvers = {
       return newPost;
     },
     deletePost: async (_, { postKey }) => {
-      const result = await pool.query("DELETE FROM posts WHERE postKey = $1", [
-        postKey,
-      ]);
+      const result = await pool.query(
+        'DELETE FROM posts WHERE "postKey" = $1',
+        [postKey]
+      );
 
       return result.rowCount > 0;
     },
