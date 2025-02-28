@@ -30,7 +30,7 @@ runs:
     - name: Docker Build and Push Image
       id: docker_build_and_push_image
       run: |
-        IMAGE_NAME="${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/server/deploy"
+        IMAGE_NAME="${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/monorepo-server/deploy"
 
         docker build -t $IMAGE_NAME:latest .
         docker push $IMAGE_NAME:latest
@@ -39,9 +39,9 @@ runs:
     - name: Deploy to Cloud Run
       id: deploy_to_cloud_run
       run: |
-        gcloud run deploy monorepo-server \
-          --image=${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/server/deploy:latest \
-          --region=us-central1 \
+        gcloud run deploy server \
+          --image=${{inputs.gcp_region}}-docker.pkg.dev/${{inputs.gcp_project_id}}/monorepo-server/deploy:latest \
+          --region=${{inputs.gcp_region}} \
           --platform=managed \
           --allow-unauthenticated
       shell: bash
