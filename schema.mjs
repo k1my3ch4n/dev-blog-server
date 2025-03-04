@@ -12,6 +12,8 @@ export const typeDefs = gql`
   type Query {
     posts(orderBy: String): [Post!]!
     post(postKey: String!): Post!
+    allTags: [String!]!
+    postsByTag(tag: String!, orderBy: String): [Post!]!
   }
 
   type Mutation {
@@ -38,6 +40,21 @@ export const resolvers = {
       );
 
       return rows[0];
+    },
+    allTags: async (_, __) => {
+      const { rows } = await pool.query(
+        "SELECT DISTINCT UNNEST(tags) AS tag FROM posts ORDER BY tag;"
+      );
+      return rows.map((row) => row.tag);
+    },
+    postsByTag: async (_, { tag, orderBy = "DESC" }) => {
+      const order = orderBy.toUpperCase() === "DESC" ? "DESC" : "ASC";
+
+      const { rows } = await pool.query(
+        `SELECT * FROM posts WHERE tags @> $1 ORDER BY id ${order};`,
+        [[tag]]
+      );
+      return rows;
     },
   },
   Mutation: {
