@@ -10,7 +10,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    posts(orderBy: String): [Post!]!
+    posts(orderBy: String, tag: String!): [Post!]!
     post(postKey: String!): Post!
     allTags: [String!]!
     postsByTag(tag: String!, orderBy: String): [Post!]!
@@ -24,11 +24,22 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    posts: async (_, { orderBy = "DESC" }) => {
+    posts: async (_, { tag, orderBy = "DESC" }) => {
       const order = orderBy.toUpperCase() === "DESC" ? "DESC" : "ASC";
 
+      let query = "SELECT * FROM posts";
+      const queryParams = [];
+
+      console.log(tag);
+
+      if (tag) {
+        query += " WHERE $1 = ANY(tags)";
+        queryParams.push(tag);
+      }
+
       const { rows } = await pool.query(
-        `SELECT * FROM posts ORDER BY id ${order}`
+        `${query} ORDER BY id ${order}`,
+        queryParams
       );
 
       return rows;
@@ -46,15 +57,6 @@ export const resolvers = {
         "SELECT DISTINCT UNNEST(tags) AS tag FROM posts ORDER BY tag;"
       );
       return rows.map((row) => row.tag);
-    },
-    postsByTag: async (_, { tag, orderBy = "DESC" }) => {
-      const order = orderBy.toUpperCase() === "DESC" ? "DESC" : "ASC";
-
-      const { rows } = await pool.query(
-        `SELECT * FROM posts WHERE tags @> $1 ORDER BY id ${order};`,
-        [[tag]]
-      );
-      return rows;
     },
   },
   Mutation: {
